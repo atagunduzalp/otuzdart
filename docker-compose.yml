@@ -1,0 +1,32 @@
+version: '3.3'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: otuz_dart_live
+      POSTGRES_USER: ata
+      POSTGRES_PASSWORD: dartligi
+    ports:
+      - "5432:5432"
+    networks:
+      - app_network  # Cloud Run ile aynı ağda olmalı
+
+  streamlit:
+    build: .
+    container_name: streamlit_app
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      DB_URL: "postgresql://ata:dartligi@postgres:5432/otuz_dart_live"
+    ports:
+      - "8501:8501"
+    networks:
+      - app_network  # PostgreSQL ile aynı Docker ağı kullanılmalı
+
+networks:
+  app_network:
+    driver: bridge
