@@ -8,6 +8,9 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 COPY . .
 
+# Google Cloud Run için 8080 portunu aç
+EXPOSE 8080
+
 # Bağımlılıkları yükle
 RUN pip install --no-cache-dir -r requirements.txt
 
